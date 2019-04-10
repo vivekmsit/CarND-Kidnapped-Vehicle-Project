@@ -142,7 +142,6 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
    *   (look at equation 3.33) http://planning.cs.uiuc.edu/node99.html
    */
   for (int i = 0; i < num_particles ; i++) {
-    // get the particle x, y coordinates
     double p_x = particles[i].x;
     double p_y = particles[i].y;
     double p_theta = particles[i].theta;
@@ -180,17 +179,17 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
     // initialize weight of the particle again
     particles[i].weight = 1.0;
     for (unsigned int j = 0; j < transformed_os.size(); j++) {
-      double o_x = transformed_os[i].x;
-      double o_y = transformed_os[i].y;
-      int landmarkId = transformed_os[i].id;
-      double weight = 0;
+      double o_x = transformed_os[j].x;
+      double o_y = transformed_os[j].y;
+      int landmarkId = transformed_os[j].id;
+      double weight = EPS;
       for (unsigned int k = 0; k < validLandmarks.size(); k++) {
         if (validLandmarks[k].id == landmarkId) {
           double dX = o_x - validLandmarks[k].x;
           double dY = o_y - validLandmarks[k].y;
           double s_x = std_landmark[0];
           double s_y = std_landmark[1];
-          double weight = ( 1/(2*M_PI*s_x*s_y)) * exp( -( dX*dX/(2*s_x*s_x) + (dY*dY/(2*s_y*s_y)) ) );
+          weight = ( 1/(2*M_PI*s_x*s_y)) * exp( -( dX*dX/(2*s_x*s_x) + (dY*dY/(2*s_y*s_y)) ) );
           if (weight == 0) {
             weight = EPS;
           }
@@ -226,7 +225,6 @@ void ParticleFilter::resample() {
 
   // Generating index.
   int index = distInt(gen);
-
   double beta = 0.0;
 
   // the wheel
@@ -239,7 +237,6 @@ void ParticleFilter::resample() {
     }
     resampledParticles.push_back(particles[index]);
   }
-
   particles = resampledParticles;
 }
 

@@ -16,7 +16,6 @@
 #include <string>
 #include <vector>
 #include <limits>
-#include <random>
 
 #include "helper_functions.h"
 
@@ -38,7 +37,6 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
    *   (and others in this file).
    */
   num_particles = 50;
-  std::default_random_engine gen;
   // This line creates a normal (Gaussian) distribution for x
   normal_distribution<double> dist_x(x, std[0]);
   normal_distribution<double> dist_y(y, std[1]);
@@ -66,8 +64,6 @@ void ParticleFilter::prediction(double delta_t, double std_pos[],
    *  http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
    *  http://www.cplusplus.com/reference/random/default_random_engine/
    */
-
-  std::default_random_engine gen;
   // This line creates a normal (Gaussian) distribution for x
   normal_distribution<double> delta_x(0, std_pos[0]);
   normal_distribution<double> delta_y(0, std_pos[1]);
@@ -209,7 +205,6 @@ void ParticleFilter::resample() {
    *   http://en.cppreference.com/w/cpp/numeric/random/discrete_distribution
    */
   // Get weights and max weight.
-  std::default_random_engine gen;
   vector<double> weights;
   double maxWeight = numeric_limits<double>::min();
   for(int i = 0; i < num_particles; i++) {
